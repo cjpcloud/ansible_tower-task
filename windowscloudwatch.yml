@@ -1,0 +1,43 @@
+---
+- hosts: win
+  remote_user: Administrator
+  tasks:
+  - name: Create directory structure
+    win_file:
+       path: C:\Cloud
+       state: directory
+  - name: Run remote PowerShell Script
+    win_command: powershell.exe Install-Module -Name Pscx -RequiredVersion 3.2.2
+  - name: Download earthrise.jpg to specified path
+    win_get_url:
+       url: http://eleven41-downloads.s3-website-us-east-1.amazonaws.com/CloudWatchMonitor/CloudWatchMonitor-1.5.0.zip
+       dest: C:\Cloud
+  - name: Obtain information about a file
+    win_stat:
+          path: C:\Cloud/CloudWatchMonitor-1.5.0.zip
+    register: file_info
+  - debug: var=file_info
+  - name: Recursively decompress GZ files in ApplicationLogs.zip
+    win_unzip:
+        src:  C:\Cloud/CloudWatchMonitor-1.5.0.zip
+        dest:  C:\Cloud/CloudWatchMonitor-1.5.0
+        recurse: yes
+        delete_archive: yes
+  - name: Ansible delete file example
+    win_file:
+     path:  C:\Cloud/CloudWatchMonitor-1.5.0/CloudWatchMonitor.exe.config
+     state: absent
+  - name: Copy a single file
+    win_copy:
+     src: /root/CloudWatchMonitor.exe.config
+     dest: C:\Cloud/CloudWatchMonitor-1.5.0/
+  - name: Copy a single file
+    win_copy:
+     src: /root/command.ps1
+     dest: C:\Cloud/CloudWatchMonitor-1.5.0/
+
+  - name: Run calc.exe
+    win_command: C:\Windows\Microsoft.NET\Framework\v4.0.30319\installutil.exe C:\Cloud/CloudWatchMonitor-1.5.0\CloudWatchMonitor.exe
+     interactive: yes
+     system: yes
+  - win_shell: C:\Cloud/CloudWatchMonitor-1.5.0/command.ps1 >> c:\somelog.txt
