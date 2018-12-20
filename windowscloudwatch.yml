@@ -17,12 +17,12 @@
           path: C:\Cloud/CloudWatchMonitor-1.5.0.zip
     register: file_info
   - debug: var=file_info
-  - name: Recursively decompress GZ files in ApplicationLogs.zip
-    win_unzip:
-        src:  C:\Cloud/CloudWatchMonitor-1.5.0.zip
-        dest:  C:\Cloud/CloudWatchMonitor-1.5.0
-        recurse: yes
-        delete_archive: yes
+  #- name: Recursively decompress GZ files in ApplicationLogs.zip
+  #  win_unzip:
+  #      src:  C:\Cloud/CloudWatchMonitor-1.5.0.zip
+  #      dest:  C:\Cloud/CloudWatchMonitor-1.5.0
+  #      recurse: yes
+  #      delete_archive: yes
   - name: Ansible delete file example
     win_file:
      path:  C:\Cloud/CloudWatchMonitor-1.5.0/CloudWatchMonitor.exe.config
@@ -31,13 +31,13 @@
     win_copy:
      src: /root/CloudWatchMonitor.exe.config
      dest: C:\Cloud/CloudWatchMonitor-1.5.0/
-  - name: Copy a single file
-    win_copy:
-     src: /root/command.ps1
-     dest: C:\Cloud/CloudWatchMonitor-1.5.0/
+  #- name: Copy a single file
+  #  win_copy:
+  #   src: /root/command.ps1
+  #   dest: C:\Cloud/CloudWatchMonitor-1.5.0/
 
-  - name: Run calc.exe
-    win_command: C:\Windows\Microsoft.NET\Framework\v4.0.30319\installutil.exe C:\Cloud/CloudWatchMonitor-1.5.0\CloudWatchMonitor.exe
-     interactive: yes
-     system: yes
-  - win_shell: C:\Cloud/CloudWatchMonitor-1.5.0/command.ps1 >> c:\somelog.txt
+  #- name: Run calc.exe
+  #  win_command: C:\Windows\Microsoft.NET\Framework\v4.0.30319\installutil.exe C:\Cloud/CloudWatchMonitor-1.5.0\CloudWatchMonitor.exe
+  #   interactive: yes
+  #   system: yes
+  #- win_shell: C:\Cloud/CloudWatchMonitor-1.5.0/command.ps1 >> c:\somelog.txt
